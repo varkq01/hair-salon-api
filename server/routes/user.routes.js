@@ -2,12 +2,11 @@ const _ = require('lodash');
 const { Router } = require('express');
 const { ObjectID } = require('mongodb');
 
-
 var { User } = require('./../models/user');
 var { authenticate } = require('./../middleware/authenticate');
 
 module.exports.routes = () => {
-  const api = Router();  
+  const api = Router();
 
   /**
    * REGISTER
@@ -18,17 +17,20 @@ module.exports.routes = () => {
 
     user
       .save()
-      // .then(() => {
-      //   return user.generateAuthToken();
-      // })
-      // .then(token => {
-      //   res.header('x-auth', token).send(user);
-      // })
-      .then( ()=> {
-        res.status(200).send();
+      .then(() => {
+        return user.generateAuthToken().then(token => {
+          res.header('x-auth', token).send(user);
+        });
       })
       .catch(e => {
-        res.status(400).send(e);
+        if (e.code == 11000) {
+          return res
+            .status(400)
+            .send({
+              message: 'Istnieje już użytkownik z podanym adresem e-mail.'
+            });
+        }
+        res.status(400).send({ message: 'Błąd przy tworzeniu użytkownika.' });
       });
   });
 
@@ -40,7 +42,8 @@ module.exports.routes = () => {
 
     User.findOne({
       email: body.email
-    }).then(user => {
+    })
+      .then(user => {
         if (!user) {
           return res.send(); //do not send error
         }
@@ -50,7 +53,7 @@ module.exports.routes = () => {
         //user exists - send email
         //TODO send email
 
-        res.send({message: 'Hasło zostało zresetowane!'});
+        res.send({ message: 'Hasło zostało zresetowane!' });
       })
       .catch(e => res.status(400).send());
   });
@@ -68,7 +71,7 @@ module.exports.routes = () => {
         });
       })
       .catch(e => {
-        res.status(400).send();
+        res.status(400).send({ message: e });
       });
   });
 
@@ -80,8 +83,8 @@ module.exports.routes = () => {
       () => {
         res.status(200).send();
       },
-      () => {
-        res.status(400).send();
+      e => {
+        res.status(400).send({message: e});
       }
     );
   });

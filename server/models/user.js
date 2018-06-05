@@ -4,77 +4,90 @@ const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 
-const UserSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1,
-    unique: true,
-    validate: {
-      validator: validator.isEmail,
-      message: 'Nieprawidłowy adres email: {VALUE}'
-    }
-  },
-  password: {
-    type: String,
-    require: true,
-    minlength: 6
-  },
-  tokens: [{
-    access: {
+const UserSchema = new mongoose.Schema(
+  {
+    firstName: {
       type: String,
       required: true
     },
-    token: {
+    lastName: {
       type: String,
       required: true
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
+      unique: true,
+      validate: {
+        validator: validator.isEmail,
+        message: 'Nieprawidłowy adres email: {VALUE}'
+      }
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6
+    },
+    tokens: [
+      {
+        access: {
+          type: String,
+          required: true
+        },
+        token: {
+          type: String,
+          required: true
+        }
+      }
+    ],
+    isAdmin: {
+      type: Boolean,
+      default: false
     }
-  }]
-}, {
-  timestamps: true
-});
+  },
+  {
+    timestamps: true
+  }
+);
 
-UserSchema.methods.toJSON = function () {
+UserSchema.methods.toJSON = function() {
   var user = this;
   var userObject = user.toObject();
 
-  return _.pick(userObject, ['_id', 'email']);
+  return _.pick(userObject, ['_id', 'email', 'firstName', 'lastName']);
 };
 
-UserSchema.methods.generateAuthToken = function () {
+UserSchema.methods.generateAuthToken = function() {
   var user = this;
   var access = 'auth';
-  var token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET).toString();
+  var token = jwt
+    .sign({ _id: user._id.toHexString(), access }, process.env.JWT_SECRET)
+    .toString();
 
 
+  user.tokens = user.tokens
+    .filter(t => t.access !== access)
+    .concat([{ access, token }]);
 
-  user.tokens = user.tokens.concat([{access, token}]);
 
   return user.save().then(() => {
     return token;
   });
 };
 
-UserSchema.methods.removeToken = function (token) {
+UserSchema.methods.removeToken = function(token) {
   const user = this;
-
+  debugger;
   return user.update({
     $pull: {
-      tokens: {token}
+      tokens: { token }
     }
   });
 };
 
-UserSchema.statics.findByToken = function (token) {
+UserSchema.statics.findByToken = function(token) {
   const User = this;
   let decoded;
 
@@ -85,18 +98,18 @@ UserSchema.statics.findByToken = function (token) {
   }
 
   return User.findOne({
-    '_id': decoded._id,
+    _id: decoded._id,
     'tokens.token': token,
     'tokens.access': 'auth'
   });
 };
 
-UserSchema.statics.findByCredentials = function (email, password) {
+UserSchema.statics.findByCredentials = function(email, password) {
   const User = this;
 
-  return User.findOne({email}).then((user) => {
+  return User.findOne({ email }).then(user => {
     if (!user) {
-      return Promise.reject();
+      return Promise.reject('Użytkownik nie istnieje.');
     }
 
     return new Promise((resolve, reject) => {
@@ -105,14 +118,14 @@ UserSchema.statics.findByCredentials = function (email, password) {
         if (res) {
           resolve(user);
         } else {
-          reject();
+          reject('Nieprawidłowe hasło.');
         }
       });
     });
   });
 };
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
   const user = this;
 
   if (user.isModified('password')) {
@@ -129,4 +142,4 @@ UserSchema.pre('save', function (next) {
 
 const User = mongoose.model('User', UserSchema);
 
-module.exports = {User}
+module.exports = { User };

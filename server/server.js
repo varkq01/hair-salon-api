@@ -5,13 +5,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 
-var {mongoose} = require('./db/mongoose');
-var {User} = require('./models/user');
-var {authenticate} = require('./middleware/authenticate');
+const {mongoose} = require('./db/mongoose');
+const {User} = require('./models/user');
+const {authenticate} = require('./middleware/authenticate');
+const {cors} = require('./middleware/cors');
 
-var app = express();
+
+const app = express();
 const port = process.env.PORT;
 
+app.use(cors);
 app.use(bodyParser.json());
 
 const categoryRoutes = require('./routes/category.routes.js');
