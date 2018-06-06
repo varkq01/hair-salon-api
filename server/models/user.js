@@ -56,7 +56,7 @@ UserSchema.methods.toJSON = function() {
   var user = this;
   var userObject = user.toObject();
 
-  return _.pick(userObject, ['_id', 'email', 'firstName', 'lastName']);
+  return _.pick(userObject, ['_id', 'email', 'firstName', 'lastName', 'isAdmin']);
 };
 
 UserSchema.methods.generateAuthToken = function() {
@@ -140,7 +140,6 @@ UserSchema.pre('save', function(next) {
   const user = this;
 
   if (user.isModified('password')) {
-    console.log('modified');
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(user.password, salt, (err, hash) => {
         user.password = hash;
@@ -149,40 +148,6 @@ UserSchema.pre('save', function(next) {
     });
   } else {
     next();
-  }
-});
-
-UserSchema.pre('update', function(next) {
-  const user = this;
-  // console.log(user);
-  // if (user.isModified('password')) {
-  //   console.log('modified');
-  //   bcrypt.genSalt(10, (err, salt) => {
-  //     bcrypt.hash(user.password, salt, (err, hash) => {
-  //       user.password = hash;
-  //       next();
-  //     });
-  //   });
-  // } else {
-  //   next();
-  // }
-
-  const password = this.getUpdate().$set.password;
-  if (!password) {
-    return next();
-  }
-  try {
-    bcrypt.genSalt(10, (err, salt) => {
-      console.log('usrpas', password)
-      bcrypt.hash(password, salt, (err, hash) => {
-        console.log(hash);
-        user.password = hash;
-
-        next();
-      });
-    });
-  } catch (error) {
-    return next(error);
   }
 });
 

@@ -2,11 +2,15 @@
   "test": {
     "PORT": 3000,
     "MONGODB_URI": "mongodb://localhost:27017/HairStudioApiTest",
-    "JWT_SECRET": "poijasdf98435jpgfdpoij3"
+    "JWT_SECRET": "poijasdf98435jpgfdpoij3",
+    "MAIL_USER": "varkq01@gmail.com",
+    "MAIL_PASS": "Kasia1006"  
   },
   "development": {
     "PORT": 3000,
     "MONGODB_URI": "mongodb://localhost:27017/HairStudioApi",
-    "JWT_SECRET": "pojiaj234oi234oij234oij4"
+    "JWT_SECRET": "pojiaj234oi234oij234oij4",
+    "MAIL_USER": "varkq01@gmail.com",
+    "MAIL_PASS": "Kasia1006"
   }
 }

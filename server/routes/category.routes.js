@@ -8,24 +8,7 @@ var { authenticate } = require('./../middleware/authenticate');
 module.exports.routes = () => {
   const api = Router();
 
-  api.post('/', authenticate, (req, res) => {
-    const category = new Category({
-      name: req.body.text,
-      _creator: req.user._id,
-      services: req.body.services
-    });
-
-    category.save().then(
-      doc => {
-        res.send(doc);
-      },
-      e => {
-        res.status(400).send('Błąd przy zapisywaniu usług.');
-      }
-    );
-  });
-
-  api.get('/', authenticate, (req, res) => {
+  api.get('/', (req, res) => {
     Category.find().then(
       categories => {
         res.send({ categories });
@@ -36,62 +19,23 @@ module.exports.routes = () => {
     );
   });
 
-  api.get('/user/', authenticate, (req, res) => {
-    Category.find({
+  api.post('/', authenticate, (req, res) => {
+    const body = _.pick(req.body, ['name', 'type', 'services', 'description']);
+    const category = new Category({
+      name: body.name,
+      description: body.description,
+      services: body.services,
+      type: body.type,
       _creator: req.user._id
-    }).then(
-      categories => {
-        res.send({ categories });
-      },
-      e => {
+    });
+
+    category
+      .save()
+      .then(() => {
+        res.send({ category });
+      })
+      .catch(e => {
         res.status(400).send(e);
-      }
-    );
-  });
-
-  api.get('/user/:id', authenticate, (req, res) => {
-    var id = req.params.id;
-
-    if (!ObjectID.isValid(id)) {
-      return res.status(404).send();
-    }
-
-    Category.findOne({
-      _id: id,
-      _creator: req.user._id
-    })
-      .then(category => {
-        if (!category) {
-          return res.status(404).send();
-        }
-
-        res.send({ category });
-      })
-      .catch(e => {
-        res.status(400).send();
-      });
-  });
-
-  api.delete('/user/:id', authenticate, (req, res) => {
-    var id = req.params.id;
-
-    if (!ObjectID.isValid(id)) {
-      return res.status(404).send();
-    }
-
-    Category.findOneAndRemove({
-      _id: id,
-      _creator: req.user._id
-    })
-      .then(category => {
-        if (!category) {
-          return res.status(404).send();
-        }
-
-        res.send({ category });
-      })
-      .catch(e => {
-        res.status(400).send();
       });
   });
 

@@ -1,0 +1,308 @@
+{
+  "categories": [
+    {
+      "name": "Strzyżenie",
+      "type": "hair",
+      "services": [
+        {
+          "name": "Strzyżenie",
+          "type": "female",
+          "price": 35,
+          "time": 60
+        },
+        {
+          "name": "Strzyżenie i stylizacja",
+          "type": "female",
+          "price": 90,
+          "time": 90
+        },
+        {
+          "name": "Upięcie/ Loki/ Koki",
+          "type": "female",
+          "price": 140,
+          "time": 120
+        },
+        {
+          "name": "Grzywka",
+          "type": "female",
+          "price": 15,
+          "time": 30
+        },
+        {
+          "name": "Strzyżenie i stylizacja",
+          "type": "female",
+          "price": 90,
+          "time": 90
+        },
+        {
+          "name": "Strzyżenie",
+          "type": "male",
+          "price": 25,
+          "time": 30
+        },
+        {
+          "name": "Strzyżenie i stylizacja",
+          "type": "male",
+          "price": 30,
+          "time": 60
+        },
+        {
+          "name": "Broda",
+          "description": "regulacja",
+          "type": "male",
+          "price": 25,
+          "time": 30
+        },
+        {
+          "name": "Broda",
+          "description": "golenie",
+          "type": "male",
+          "price": 50,
+          "time": 60
+        }
+      ]
+    },
+    {
+      "name": "Strzyżenie",
+      "type": "hair",
+      "services": [
+        {
+          "name": "Strzyżenie",
+          "type": "female",
+          "price": 35,
+          "time": 60
+        },
+        {
+          "name": "Strzyżenie i stylizacja",
+          "type": "female",
+          "price": 90,
+          "time": 90
+        },
+        {
+          "name": "Upięcie/ Loki/ Koki",
+          "type": "female",
+          "price": 140,
+          "time": 120
+        },
+        {
+          "name": "Grzywka",
+          "type": "female",
+          "price": 15,
+          "time": 30
+        },
+        {
+          "name": "Strzyżenie i stylizacja",
+          "type": "female",
+          "price": 90,
+          "time": 90
+        },
+        {
+          "name": "Strzyżenie",
+          "type": "male",
+          "price": 25,
+          "time": 30
+        },
+        {
+          "name": "Strzyżenie i stylizacja",
+          "type": "male",
+          "price": 30,
+          "time": 60
+        },
+        {
+          "name": "Broda",
+          "description": "regulacja",
+          "type": "male",
+          "price": 25,
+          "time": 30
+        },
+        {
+          "name": "Broda",
+          "description": "golenie",
+          "type": "male",
+          "price": 50,
+          "time": 60
+        }
+      ]
+    },
+    {
+      "name": "Koloryzacja",
+      "services": [
+        {
+          "name": "Pierwsze farbowanie",
+          "description": "Strzyżenie i stylizacja w cenie",
+          "price": 220,
+          "type": "female",
+          "time": 120
+        },
+        {
+          "name": "Kolejne farbowanie",
+          "description": "Strzyżenie i stylizacja w cenie",
+          "price": 190,
+          "type": "female",
+          "time": 120
+        },
+        {
+          "name": "Ombre/ sombre",
+          "description": "Strzyżenie i stylizacja w cenie",
+          "price": 240,
+          "type": "female",
+          "time": 120
+        },
+        {
+          "name": "Dekoloryzacja",
+          "price": 150,
+          "type": "female",
+          "time": 60
+        },
+        {
+          "name": "Farbowanie",
+          "price": 90,
+          "type": "male",
+          "time": 60
+        }
+      ]
+    },
+    {
+      "name": "Zabiegi",
+      "type": "hair",
+      "services": [
+        {
+          "name": "Zabieg kreatynowy",
+          "price": 340,
+          "type": "female",
+          "time": 60
+        },
+        {
+          "name": "Reshading",
+          "description": "Zabieg odsiwiania",
+          "price": 140,
+          "type": "male",
+          "time": 90
+        }
+      ]
+    },
+    {
+        "name": "Zabiegi",
+        "type": "body",
+        "services": [
+           {
+              "name": "Masaż twarzy",
+              "price": 55,
+              "time": 30
+           },
+           {
+              "name": "Mikrodermabrazja diamentowa",
+              "price": 140,
+              "time": 60
+           },
+           {
+              "name": "Oczyszczanie twarzy ",
+              "price": 120,
+              "time": 40
+           },
+           {
+              "name": "Zabieg złuszczający",
+              "description": "Przy pomocy kwasu",
+              "price": 140,
+              "time": 90
+           },
+           {
+              "name": "Zabieg odżywczy",
+              "price": 160,
+              "time": 60
+           },
+           {
+              "name": "Zabieg dla cer wrażliwych",
+              "price": 160,
+              "time": 60
+           },
+           {
+              "name": "Zabieg liftingujący",
+              "price": 200,
+              "time": 60
+           }
+        ]
+     },
+     {
+        "name": "Brwi i Oczy",
+        "type": "body",
+        "services": [
+           {
+              "name": "Regulacja brwi",
+              "price": 20,
+              "time": 40
+           },
+           {
+              "name": "Henna",
+              "price": 40,
+              "time": 50
+           },
+           {
+              "name": "Rzęsy",
+              "price": 25,
+              "time": 30
+           },
+           {
+              "name": "Brwi i rzęsy",
+              "price": 40,
+              "time": 110
+           }
+        ]
+     },
+     {
+        "name": "Dłonie",
+        "type": "body",
+        "services": [
+           {
+              "name": "Manicure Klasyczny",
+              "price": 55
+           },
+           {
+              "name": "Manicure Japoński",
+              "price": 50
+           },
+           {
+              "name": "Manicure Hybrydowy",
+              "price": 80
+           }
+        ]
+     },
+     {
+        "name": "Stopy",
+        "type": "body",
+        "services": [
+           {
+              "name": "Pedicure Klasyczny",
+              "price": 80,
+              "time": 40
+           },
+           {
+              "name": "Pedicure Leczniczy",
+              "price": 90,
+              "time": 90
+           }
+        ]
+     },
+     {
+        "name": "Inne",
+        "type": "body",
+        "services": [
+           {
+              "name": "Makijaż",
+              "price": 100,
+              "time": 60
+           },
+           {
+              "name": "Makijaż ślubny",
+              "price": 150,
+              "time": 120
+           },
+           {
+              "name": "Przekłuwanie uszu",
+              "price": 60,
+              "time": 30
+           }
+        ]
+     }
+  ]
+}

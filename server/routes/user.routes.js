@@ -2,8 +2,9 @@ const _ = require('lodash');
 const { Router } = require('express');
 const { ObjectID } = require('mongodb');
 
-var { User } = require('./../models/user');
-var { authenticate } = require('./../middleware/authenticate');
+const { User } = require('./../models/user');
+const { authenticate } = require('./../middleware/authenticate');
+const mailer = require('./../mailing/mailer');
 
 module.exports.routes = () => {
   const api = Router();
@@ -47,15 +48,15 @@ module.exports.routes = () => {
         }
 
         const pass = user.getResetPassword().then(pass => {
-          user.password = pass;
+          const password = pass;
+          user.password = password;
 
           user.save().then(() => {
+
+            mailer.sendResetPasswordEmail(user.email, password);
             res.send();
           });
         });
-
-        //user exists - send email
-        //TODO send email
       })
       .catch(e => res.status(400).send(e));
   });

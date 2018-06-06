@@ -6,7 +6,10 @@ const CategorySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-
+  type: {
+    type: String,
+    required: true
+  },
   _creator: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
@@ -23,7 +26,6 @@ const CategorySchema = new mongoose.Schema({
       },
       type: {
         type: String,
-        required: true
       },
       price: {
         type: Number,
@@ -33,10 +35,6 @@ const CategorySchema = new mongoose.Schema({
         type: Number,
         required: true
       },
-      _creator: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-      }
     }
   ]
 });
