@@ -24,11 +24,9 @@ module.exports.routes = () => {
       })
       .catch(e => {
         if (e.code == 11000) {
-          return res
-            .status(400)
-            .send({
-              message: 'Istnieje już użytkownik z podanym adresem e-mail.'
-            });
+          return res.status(400).send({
+            message: 'Istnieje już użytkownik z podanym adresem e-mail.'
+          });
         }
         res.status(400).send({ message: 'Błąd przy tworzeniu użytkownika.' });
       });
@@ -48,14 +46,18 @@ module.exports.routes = () => {
           return res.send(); //do not send error
         }
 
-        //TODO update
+        const pass = user.getResetPassword().then(pass => {
+          user.password = pass;
+
+          user.save().then(() => {
+            res.send();
+          });
+        });
 
         //user exists - send email
         //TODO send email
-
-        res.send({ message: 'Hasło zostało zresetowane!' });
       })
-      .catch(e => res.status(400).send());
+      .catch(e => res.status(400).send(e));
   });
 
   /**
@@ -84,7 +86,7 @@ module.exports.routes = () => {
         res.status(200).send();
       },
       e => {
-        res.status(400).send({message: e});
+        res.status(400).send({ message: e });
       }
     );
   });
