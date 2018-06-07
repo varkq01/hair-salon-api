@@ -23,6 +23,7 @@ const userRoutes = require('./routes/user.routes.js');
 const contactRoutes = require('./routes/contact.routes.js');
 const fileRoutes = require('./routes/filesaver.js');
 const employeeRoutes = require('./routes/employee.routes.js');
+const visitRoutes = require('./routes/visit.routes.js');
 
 
 
@@ -32,6 +33,8 @@ app.use('/api/users', userRoutes.routes());
 app.use('/api/contact', contactRoutes.routes());
 app.use('/api/file', fileRoutes.routes());
 app.use('/api/employees', employeeRoutes.routes());
+app.use('/api/visits', visitRoutes.routes());
+
 
 
 
