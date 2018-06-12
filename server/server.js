@@ -18,10 +18,12 @@ app.use(cors);
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
+process.env.TZ = 'Europe/Budapest'; 
+
 const categoryRoutes = require('./routes/category.routes.js');
 const userRoutes = require('./routes/user.routes.js');
 const contactRoutes = require('./routes/contact.routes.js');
-const fileRoutes = require('./routes/filesaver.js');
+// const fileRoutes = require('./routes/filesaver.js');
 const employeeRoutes = require('./routes/employee.routes.js');
 const visitRoutes = require('./routes/visit.routes.js');
 
@@ -31,7 +33,7 @@ const visitRoutes = require('./routes/visit.routes.js');
 app.use('/api/categories', categoryRoutes.routes());
 app.use('/api/users', userRoutes.routes());
 app.use('/api/contact', contactRoutes.routes());
-app.use('/api/file', fileRoutes.routes());
+// app.use('/api/file', fileRoutes.routes());
 app.use('/api/employees', employeeRoutes.routes());
 app.use('/api/visits', visitRoutes.routes());
 
