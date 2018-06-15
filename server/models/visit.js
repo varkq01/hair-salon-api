@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 
 const VisitSchema = new mongoose.Schema(
@@ -18,6 +18,10 @@ const VisitSchema = new mongoose.Schema(
           type: String
         },
         price: {
+          type: Number,
+          required: true
+        },
+        time: {
           type: Number,
           required: true
         }
@@ -48,6 +52,10 @@ const VisitSchema = new mongoose.Schema(
     time: {
       type: Number,
       required: true
+    },
+    isCancelled: {
+      type: Boolean,
+      default: false
     }
   },
   {
@@ -68,15 +76,12 @@ VisitSchema.statics.getAvailableHours = function(
   const firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   const Visit = this;
-
   return Visit.find({
     date: {
       $gte: firstDayMonth,
       $lte: lastDayMonth
     },
-    employee: {
-      id: ObjectID(employeeID)
-    }
+    'employee.id': employeeID
   })
     .then(visits => {
       let days = [];
@@ -111,7 +116,7 @@ VisitSchema.statics.getAvailableHours = function(
 VisitSchema.statics.checkIfExist = function(date, duration, visits) {
   const endDate = Visit.addMinutes(date, duration);
   const visit = visits.find(v => {
-    const visitEndTime = Visit.addMinutes(v.date, v.duration);
+    const visitEndTime = Visit.addMinutes(v.date, v.time);
     const isStartBetween = v.date < date && visitEndTime > date;
     const isEndBetween = v.date < endDate && visitEndTime > endDate;
     const isVisitStartBetween = date <= v.date && v.date < endDate;

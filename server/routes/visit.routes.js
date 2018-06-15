@@ -32,9 +32,16 @@ module.exports.routes = () => {
   });
 
   api.post('/', (req, res) => {
-    var body = _.pick(req.body, ['services', 'employee', 'clientMail', 'date']);
-    var visit = new Visit(body);
-    visit.price = body.services.reduce((a, b) => a.price + b.price);
+    const body = _.pick(req.body, ['date', 'employee', 'clientMail', 'services']);
+    const visit = new Visit();
+    visit.employee = req.body.employee;
+    visit.clientMail = req.body.clientMail
+    visit.date = body.date;
+    visit.services = body.services.map(service => {
+      return _.pick(service, ['name', 'description', 'price', 'time']);
+    })
+    visit.price = visit.services.reduce((a, b) => a.price + b.price);
+    visit.time = visit.services.reduce((a,b) => a.time + b.time);
 
     visit
       .save()
