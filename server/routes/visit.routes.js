@@ -11,14 +11,35 @@ module.exports.routes = () => {
   api.get('/', authenticate, (req, res) => {
     Visit.find({
       clientMail: req.user.email
-    }).then(
-      visits => {
-        res.send({ visits });
-      },
-      e => {
-        res.status(400).send(e);
-      }
-    );
+    })
+      .sort({ date: 'desc' })
+      .then(
+        visits => {
+          res.send({ visits });
+        },
+        e => {
+          res.status(400).send(e);
+        }
+      );
+  });
+
+  api.get('/all', authenticate, (req, res) => {
+    if (!req.user.isAdmin) {
+      res.status(401).send();
+    }
+
+    Visit.findAll({
+      clientMail: req.user.email
+    })
+      .sort({ date: 'desc' })
+      .then(
+        visits => {
+          res.send({ visits });
+        },
+        e => {
+          res.status(400).send(e);
+        }
+      );
   });
 
   api.post('/hours', (req, res) => {
@@ -32,16 +53,27 @@ module.exports.routes = () => {
   });
 
   api.post('/', (req, res) => {
-    const body = _.pick(req.body, ['date', 'employee', 'clientMail', 'services']);
+    const body = _.pick(req.body, [
+      'date',
+      'employee',
+      'clientMail',
+      'services'
+    ]);
     const visit = new Visit();
     visit.employee = req.body.employee;
-    visit.clientMail = req.body.clientMail
+    visit.clientMail = req.body.clientMail;
     visit.date = body.date;
     visit.services = body.services.map(service => {
       return _.pick(service, ['name', 'description', 'price', 'time']);
-    })
-    visit.price = visit.services.reduce((a, b) => a.price + b.price);
-    visit.time = visit.services.reduce((a,b) => a.time + b.time);
+    });
+    visit.price = 0;
+    visit.time = 0;
+
+    visit.services.forEach(s => {
+      visit.price += s.price;
+      visit.time += s.time;
+    });
+
 
     visit
       .save()

@@ -20,10 +20,9 @@ module.exports.routes = () => {
   });
 
   api.post('/', authenticate, (req, res) => {
-    const body = _.pick(req.body, ['name', 'type', 'services', 'description']);
+    const body = _.pick(req.body, ['name', 'type', 'services']);
     const category = new Category({
       name: body.name,
-      description: body.description,
       services: body.services,
       type: body.type,
       _creator: req.user._id
@@ -39,19 +38,15 @@ module.exports.routes = () => {
       });
   });
 
-  api.patch('/:id', authenticate, (req, res) => {
+  api.put('/:id', authenticate, (req, res) => {
     var id = req.params.id;
-    var body = _.pick(req.body, ['name', 'services']);
+    var body = _.pick(req.body, ['name', 'type', 'services']);
 
     if (!ObjectID.isValid(id)) {
       return res.status(404).send();
     }
 
-    Category.findOneAndUpdate(
-      { _id: id, _creator: req.user._id },
-      { $set: body },
-      { new: true }
-    )
+    Category.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
       .then(category => {
         if (!category) {
           return res.status(404).send();
@@ -62,6 +57,21 @@ module.exports.routes = () => {
       .catch(e => {
         res.status(400).send();
       });
+  });
+
+  api.delete('/:id', authenticate, (req, res) => {
+    if (!req.user.isAdmin) {
+      return res.status(401).send();
+    }
+
+    Category.findByIdAndRemove(req.params.id).then(
+      category => {
+        res.send();
+      },
+      e => {
+        res.status(400).send(e);
+      }
+    );
   });
 
   return api;

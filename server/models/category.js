@@ -24,9 +24,6 @@ const CategorySchema = new mongoose.Schema({
       description: {
         type: String
       },
-      type: {
-        type: String,
-      },
       price: {
         type: Number,
         required: true
