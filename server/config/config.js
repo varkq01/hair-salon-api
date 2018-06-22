@@ -10,7 +10,7 @@ if (env === 'development' || env === 'test') {
 } else {
   let config = require('./config.json');
   let conf = config['prod'];
-  Object.keys(envConfig).forEach((key) => {
-    process.env[key] = envConfig[key];
+  Object.keys(conf).forEach((key) => {
+    process.env[key] = conf[key];
   });
 }
