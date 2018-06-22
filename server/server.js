@@ -46,7 +46,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/hair-salon/index.html'));
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Started up at port ${port}`);
 });
 
