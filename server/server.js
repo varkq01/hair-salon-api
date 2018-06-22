@@ -42,7 +42,7 @@ app.use('/api/visits', visitRoutes.routes());
 //   res.sendFile(__dirname+'/dist/hair-salon/index.html');
 // });
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/hair-salon/index.html'));
 });
 
