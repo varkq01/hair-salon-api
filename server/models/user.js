@@ -122,10 +122,14 @@ UserSchema.statics.findByCredentials = function(email, password) {
     if (!user) {
       return Promise.reject('Użytkownik nie istnieje.');
     }
+    return User.checkPassword(user, password)
+  });
+};
 
+UserSchema.statics.checkPassword = function(user, inputPassword) {
     return new Promise((resolve, reject) => {
       // Use bcrypt.compare to compare password and user.password
-      bcrypt.compare(password, user.password, (err, res) => {
+      bcrypt.compare(inputPassword, user.password, (err, res) => {
         if (res) {
           resolve(user);
         } else {
@@ -133,8 +137,7 @@ UserSchema.statics.findByCredentials = function(email, password) {
         }
       });
     });
-  });
-};
+}
 
 UserSchema.pre('save', function(next) {
   const user = this;

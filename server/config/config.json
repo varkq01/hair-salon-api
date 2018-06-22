@@ -12,5 +12,10 @@
     "JWT_SECRET": "pojiaj234oi234oij234oij4",
     "MAIL_USER": "varkq01@gmail.com",
     "MAIL_PASS": "Kasia1006"
+  },
+  "prod": {
+    "JWT_SECRET": "pojiaj234oi234oij234oij4",
+    "MAIL_USER": "varkq01@gmail.com",
+    "MAIL_PASS": "Kasia1006"
   }
 }

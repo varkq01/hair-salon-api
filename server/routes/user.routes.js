@@ -61,6 +61,21 @@ module.exports.routes = () => {
       .catch(e => res.status(400).send(e));
   });
 
+  api.put('/change', authenticate, (req, res) => {
+    const body = _.pick(req.body, ['newPassword', 'currentPassword']);
+    const user = req.user;
+    User.checkPassword(user, body.currentPassword)
+    .then(() => {
+      user.password = body.newPassword;
+      user.save().then(user => {
+        res.send();
+      });
+    }).catch(err => {
+      res.status(400).send({message: err});
+
+    });
+  });
+
   /**
    * LOGIN
    */

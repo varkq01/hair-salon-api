@@ -33,12 +33,13 @@ const visitRoutes = require('./routes/visit.routes.js');
 app.use('/api/categories', categoryRoutes.routes());
 app.use('/api/users', userRoutes.routes());
 app.use('/api/contact', contactRoutes.routes());
-// app.use('/api/file', fileRoutes.routes());
 app.use('/api/employees', employeeRoutes.routes());
 app.use('/api/visits', visitRoutes.routes());
 
 
-
+app.get('/*', function(req,res) {
+  res.sendFile(path.join(__dirname+'/dist/index.html'));
+});
 
 
 app.listen(port, () => {

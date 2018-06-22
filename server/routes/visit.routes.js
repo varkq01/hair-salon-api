@@ -4,6 +4,8 @@ const { Router } = require('express');
 
 var { Visit } = require('./../models/visit');
 var { authenticate } = require('./../middleware/authenticate');
+const mailer = require('./../mailing/mailer');
+
 
 module.exports.routes = () => {
   const api = Router();
@@ -28,9 +30,7 @@ module.exports.routes = () => {
       res.status(401).send();
     }
 
-    Visit.findAll({
-      clientMail: req.user.email
-    })
+    Visit.find()
       .sort({ date: 'desc' })
       .then(
         visits => {
@@ -77,12 +77,36 @@ module.exports.routes = () => {
 
     visit
       .save()
-      .then(() => {
+      .then((visit) => {
+        mailer.sendVisitCreatedEmail(visit.clientMail, visit.date, visit.employee, visit.services, visit.price);
+
         res.send({ visit });
       })
       .catch(e => {
         res.status(400).send({ message: 'Błąd przy zapisywaniu wizyty.' });
       });
+  });
+
+  api.put('/cancel/:id', authenticate, (req, res) => {
+    if (!req.user.isAdmin) {
+      res.status(401).send();
+    }
+
+    Visit.findByIdAndUpdate(req.params.id, {
+       $set: {
+         isCancelled: true
+       } 
+    })
+      .then(
+        visit => {
+          const reason = _.pick(req.body, 'reason').reason;
+          mailer.sendCancelledVisitEmail(visit.clientMail, visit.date, reason);
+          res.send();
+        },
+        e => {
+          res.status(400).send(e);
+        }
+      );
   });
 
   return api;
